@@ -1,19 +1,15 @@
 // ============================================================
 // Google Apps Script — RSVP backend for Shanmukha & Bhanu wedding
 // ============================================================
-// SETUP (5 minutes):
-// 1. Create a new Google Sheet
-// 2. Name the first sheet "RSVPs"
-// 3. Add headers in row 1: Timestamp | Name | Response | Guests | Kids | Events | Message
-// 4. Go to Extensions → Apps Script
-// 5. Delete any existing code, paste this entire file
-// 6. Click Deploy → New deployment
-//    - Type: Web app
-//    - Execute as: Me
-//    - Who has access: Anyone
-// 7. Click Deploy, authorize when prompted
-// 8. Copy the Web app URL (looks like https://script.google.com/macros/s/XXXXX/exec)
-// 9. Paste that URL into rsvp.html where it says GOOGLE_SCRIPT_URL
+// SETUP:
+// 1. Create a new Google Sheet, name the first sheet "RSVPs"
+// 2. Add headers in row 1: Timestamp | Name | Response | Guests | Kids | Events | Message
+// 3. Extensions → Apps Script → paste this file
+// 4. Deploy → New deployment → Web app → Execute as: Me → Who: Anyone
+// 5. Copy the URL into rsvp.html GOOGLE_SCRIPT_URL
+//
+// IMPORTANT: After editing this script, you must:
+//   Deploy → Manage deployments → Edit (pencil icon) → Version: New version → Deploy
 // ============================================================
 
 function doPost(e) {
@@ -25,7 +21,8 @@ function doPost(e) {
       sheet.appendRow(['Timestamp', 'Name', 'Response', 'Guests', 'Kids', 'Events', 'Message']);
     }
 
-    var data = JSON.parse(e.postData.contents);
+    var raw = e.parameter.data || e.postData.contents;
+    var data = JSON.parse(raw);
 
     sheet.appendRow([
       new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }),

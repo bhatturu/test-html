@@ -151,11 +151,12 @@
 
         if (GOOGLE_SCRIPT_URL) {
           try {
+            const formBody = new URLSearchParams();
+            formBody.append('data', JSON.stringify(payload));
             await fetch(GOOGLE_SCRIPT_URL, {
               method: 'POST',
               mode: 'no-cors',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
+              body: formBody
             });
           } catch {}
         }
