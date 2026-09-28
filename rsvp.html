@@ -106,6 +106,10 @@
       <a class="return-link" href="index.html">← Back to invitation</a>
     </main>
     <script>
+      // ── PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE ──
+      const GOOGLE_SCRIPT_URL = '';
+      const WHATSAPP_NUMBER = '';
+
       const params = new URLSearchParams(window.location.search);
       const form = document.getElementById('rsvpForm');
       const responseMessage = document.getElementById('responseMessage');
@@ -121,20 +125,46 @@
       }
 
       let rsvpText = '';
-      const WHATSAPP_NUMBER = ''; // optionally pre-fill a number
 
-      form.addEventListener('submit', (event) => {
+      form.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (!form.reportValidity()) return;
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+
         const data = new FormData(form);
         const events = data.getAll('events');
         const eventsLine = events.length > 0 ? `\nEvents: ${events.join(', ')}` : '';
-        rsvpText = `RSVP — ${data.get('guestName')}\nWedding of Shanmukha & Bhanu (24–26 Nov 2026)\nResponse: ${data.get('response')}\nGuests: ${data.get('guestCount')}\nKids: ${data.get('kidsCount')}${eventsLine}${data.get('note') ? `\nMessage: ${data.get('note')}` : ''}`;
+
+        const payload = {
+          guestName: data.get('guestName'),
+          response: data.get('response'),
+          guestCount: data.get('guestCount'),
+          kidsCount: data.get('kidsCount'),
+          events: events,
+          note: data.get('note') || ''
+        };
+
+        rsvpText = `RSVP — ${payload.guestName}\nWedding of Shanmukha & Bhanu (24–26 Nov 2026)\nResponse: ${payload.response}\nGuests: ${payload.guestCount}\nKids: ${payload.kidsCount}${eventsLine}${payload.note ? `\nMessage: ${payload.note}` : ''}`;
+
+        if (GOOGLE_SCRIPT_URL) {
+          try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+          } catch {}
+        }
+
         form.hidden = true;
-        const isAttending = data.get('response') === 'Joyfully attending';
+        const isAttending = payload.response === 'Joyfully attending';
         messageText.textContent = isAttending
-          ? 'We can\'t wait to celebrate with you! Please share your RSVP below.'
-          : 'We\'ll miss you! Please share your response below.';
+          ? 'We can\'t wait to celebrate with you! Your RSVP has been recorded.'
+          : 'We\'ll miss you! Your response has been recorded.';
         responseMessage.hidden = false;
 
         const waLink = document.getElementById('whatsappShare');
@@ -147,7 +177,6 @@
       document.getElementById('copyResponse').addEventListener('click', async (event) => {
         try {
           await navigator.clipboard.writeText(rsvpText);
-          event.currentTarget.querySelector('svg').style.display = 'none';
           event.currentTarget.innerHTML = '✓ Copied!';
           setTimeout(() => { event.currentTarget.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy RSVP message'; }, 2000);
         } catch {
