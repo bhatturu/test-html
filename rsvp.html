@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f0e5" />
+    <title>RSVP | Shanmukha &amp; Bhanu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="rsvp.css" />
+    <style>
+      .guest-counts { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+      .guest-counts .field-label { margin-top:19px; }
+      .share-actions { display:grid; gap:10px; margin-top:18px; }
+      .share-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:13px 18px; border:1px solid var(--evergreen); border-radius:0; cursor:pointer; font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.09em; transition:filter .2s,transform .2s; text-decoration:none; }
+      .share-btn:hover { filter:brightness(1.06); transform:translateY(-2px); }
+      .share-btn svg { width:18px; height:18px; flex:0 0 auto; }
+      .whatsapp-btn { color:#fff; background:#25d366; border-color:#25d366; }
+      .copy-btn { color:var(--paper); background:var(--evergreen); border-color:var(--evergreen); }
+      .share-native-btn { color:var(--evergreen); background:transparent; border-color:var(--evergreen); }
+      .share-divider { margin:14px 0 4px; color:rgba(38,54,47,.55); font:italic 13px var(--serif); text-align:center; }
+      .events-attending { margin-top:6px; }
+      .events-attending legend { margin-bottom:8px; }
+      .event-checks { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+      .event-checks label { display:flex; align-items:center; gap:7px; padding:8px 10px; border:1px solid rgba(67,89,71,.28); font:15px var(--serif); cursor:pointer; transition:background .2s; }
+      .event-checks label:has(input:checked) { background:rgba(67,89,71,.08); border-color:var(--evergreen); }
+      .event-checks input { accent-color:var(--evergreen); width:16px; height:16px; }
+      @media (max-width:400px) {
+        .event-checks { grid-template-columns:1fr; }
+        .guest-counts { grid-template-columns:1fr 1fr; }
+      }
+    </style>
+  </head>
+  <body class="rsvp-page">
+    <main class="rsvp-card">
+      <p class="rsvp-telugu">YOUR PRESENCE IS OUR JOY</p>
+      <p class="eyebrow rsvp-eyebrow">RSVP FOR THE WEDDING OF</p>
+      <h1>Shanmukha <em>&amp;</em> Bhanu</h1>
+      <p class="rsvp-date">24–26 NOVEMBER 2026</p>
+      <form id="rsvpForm" novalidate>
+        <fieldset>
+          <legend>Will you be joining us?</legend>
+          <div class="response-options">
+            <label><input type="radio" name="response" value="Joyfully attending" required /><span>Joyfully attending</span></label>
+            <label><input type="radio" name="response" value="Sending warm wishes" /><span>Sending warm wishes</span></label>
+          </div>
+        </fieldset>
+        <label class="field-label" for="guestName">Your name</label>
+        <input id="guestName" name="guestName" autocomplete="name" placeholder="Name of guest / family" required />
+        <div class="guest-counts">
+          <div>
+            <label class="field-label" for="guestCount">Guests</label>
+            <select id="guestCount" name="guestCount">
+              <option value="1">1 guest</option>
+              <option value="2" selected>2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4">4 guests</option>
+              <option value="5+">5+ guests</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="kidsCount">Kids</label>
+            <select id="kidsCount" name="kidsCount">
+              <option value="0">No kids</option>
+              <option value="1">1 child</option>
+              <option value="2">2 children</option>
+              <option value="3">3 children</option>
+              <option value="4+">4+ children</option>
+            </select>
+          </div>
+        </div>
+        <fieldset class="events-attending">
+          <legend class="field-label">Which events? <span>(select all)</span></legend>
+          <div class="event-checks">
+            <label><input type="checkbox" name="events" value="Haldi" checked />Haldi</label>
+            <label><input type="checkbox" name="events" value="Mehendi" checked />Mehendi</label>
+            <label><input type="checkbox" name="events" value="Sangeet" checked />Sangeet</label>
+            <label><input type="checkbox" name="events" value="Reception" checked />Reception</label>
+          </div>
+        </fieldset>
+        <label class="field-label" for="note">A note for the couple <span>(optional)</span></label>
+        <textarea id="note" name="note" rows="3" placeholder="Your warm wishes…"></textarea>
+        <button type="submit">Send RSVP <span>→</span></button>
+      </form>
+      <div class="response-message" id="responseMessage" hidden aria-live="polite">
+        <p class="message-mark">✦</p>
+        <h2>Thank you!</h2>
+        <p id="messageText"></p>
+        <div class="share-actions">
+          <a class="share-btn whatsapp-btn" id="whatsappShare" href="#" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Send via WhatsApp
+          </a>
+          <button class="share-btn copy-btn" id="copyResponse" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy RSVP message
+          </button>
+          <button class="share-btn share-native-btn" id="nativeShare" type="button" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+            Share…
+          </button>
+        </div>
+      </div>
+      <a class="return-link" href="index.html">← Back to invitation</a>
+    </main>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const form = document.getElementById('rsvpForm');
+      const responseMessage = document.getElementById('responseMessage');
+      const messageText = document.getElementById('messageText');
+      const responseChoice = params.get('response');
+      const attending = document.querySelector('input[value="Joyfully attending"]');
+      const wishes = document.querySelector('input[value="Sending warm wishes"]');
+      if (responseChoice === 'joyfully-attending') attending.checked = true;
+      if (responseChoice === 'with-regrets') wishes.checked = true;
+
+      if (navigator.share) {
+        document.getElementById('nativeShare').hidden = false;
+      }
+
+      let rsvpText = '';
+      const WHATSAPP_NUMBER = ''; // optionally pre-fill a number
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        const data = new FormData(form);
+        const events = data.getAll('events');
+        const eventsLine = events.length > 0 ? `\nEvents: ${events.join(', ')}` : '';
+        rsvpText = `RSVP — ${data.get('guestName')}\nWedding of Shanmukha & Bhanu (24–26 Nov 2026)\nResponse: ${data.get('response')}\nGuests: ${data.get('guestCount')}\nKids: ${data.get('kidsCount')}${eventsLine}${data.get('note') ? `\nMessage: ${data.get('note')}` : ''}`;
+        form.hidden = true;
+        const isAttending = data.get('response') === 'Joyfully attending';
+        messageText.textContent = isAttending
+          ? 'We can\'t wait to celebrate with you! Please share your RSVP below.'
+          : 'We\'ll miss you! Please share your response below.';
+        responseMessage.hidden = false;
+
+        const waLink = document.getElementById('whatsappShare');
+        const waText = encodeURIComponent(rsvpText);
+        waLink.href = WHATSAPP_NUMBER
+          ? `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`
+          : `https://wa.me/?text=${waText}`;
+      });
+
+      document.getElementById('copyResponse').addEventListener('click', async (event) => {
+        try {
+          await navigator.clipboard.writeText(rsvpText);
+          event.currentTarget.querySelector('svg').style.display = 'none';
+          event.currentTarget.innerHTML = '✓ Copied!';
+          setTimeout(() => { event.currentTarget.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy RSVP message'; }, 2000);
+        } catch {
+          prompt('Copy this RSVP:', rsvpText);
+        }
+      });
+
+      document.getElementById('nativeShare').addEventListener('click', async () => {
+        try {
+          await navigator.share({ title: 'RSVP — Shanmukha & Bhanu Wedding', text: rsvpText });
+        } catch {}
+      });
+    </script>
+  </body>
+</html>
