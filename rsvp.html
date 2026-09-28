@@ -151,13 +151,22 @@
 
         if (GOOGLE_SCRIPT_URL) {
           try {
-            const formBody = new URLSearchParams();
-            formBody.append('data', JSON.stringify(payload));
-            await fetch(GOOGLE_SCRIPT_URL, {
-              method: 'POST',
-              mode: 'no-cors',
-              body: formBody
-            });
+            const iframe = document.createElement('iframe');
+            iframe.name = 'rsvp-sink';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            const hiddenForm = document.createElement('form');
+            hiddenForm.method = 'POST';
+            hiddenForm.action = GOOGLE_SCRIPT_URL;
+            hiddenForm.target = 'rsvp-sink';
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'data';
+            input.value = JSON.stringify(payload);
+            hiddenForm.appendChild(input);
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
+            hiddenForm.remove();
           } catch {}
         }
 
