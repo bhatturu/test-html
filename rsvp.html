@@ -27,6 +27,10 @@
       .event-checks label { display:flex; align-items:center; gap:7px; padding:8px 10px; border:1px solid rgba(67,89,71,.28); font:15px var(--serif); cursor:pointer; transition:background .2s; }
       .event-checks label:has(input:checked) { background:rgba(67,89,71,.08); border-color:var(--evergreen); }
       .event-checks input { accent-color:var(--evergreen); width:16px; height:16px; }
+      .blessing-intro { margin:20px 0 4px; padding:17px 18px; border:1px solid rgba(183,142,70,.38); background:rgba(183,142,70,.07); text-align:center; }
+      .blessing-intro h2 { margin:0 0 5px; color:var(--evergreen); font:italic 24px var(--serif); }
+      .blessing-intro p { margin:0; color:rgba(38,54,47,.78); font:italic 15px/1.4 var(--serif); }
+      [hidden] { display:none !important; }
       @media (max-width:400px) {
         .event-checks { grid-template-columns:1fr; }
         .guest-counts { grid-template-columns:1fr 1fr; }
@@ -49,38 +53,44 @@
         </fieldset>
         <label class="field-label" for="guestName">Your name</label>
         <input id="guestName" name="guestName" autocomplete="name" placeholder="Name of guest / family" required />
-        <div class="guest-counts">
-          <div>
-            <label class="field-label" for="guestCount">Guests</label>
-            <select id="guestCount" name="guestCount">
-              <option value="1">1 guest</option>
-              <option value="2" selected>2 guests</option>
-              <option value="3">3 guests</option>
-              <option value="4">4 guests</option>
-              <option value="5+">5+ guests</option>
-            </select>
+        <div id="attendingDetails">
+          <div class="guest-counts">
+            <div>
+              <label class="field-label" for="guestCount">Guests</label>
+              <select id="guestCount" name="guestCount">
+                <option value="1">1 guest</option>
+                <option value="2" selected>2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+                <option value="5+">5+ guests</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="kidsCount">Kids</label>
+              <select id="kidsCount" name="kidsCount">
+                <option value="0">No kids</option>
+                <option value="1">1 child</option>
+                <option value="2">2 children</option>
+                <option value="3">3 children</option>
+                <option value="4+">4+ children</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label class="field-label" for="kidsCount">Kids</label>
-            <select id="kidsCount" name="kidsCount">
-              <option value="0">No kids</option>
-              <option value="1">1 child</option>
-              <option value="2">2 children</option>
-              <option value="3">3 children</option>
-              <option value="4+">4+ children</option>
-            </select>
-          </div>
+          <fieldset class="events-attending">
+            <legend class="field-label">Which events? <span>(select all)</span></legend>
+            <div class="event-checks">
+              <label><input type="checkbox" name="events" value="Haldi" checked />Haldi</label>
+              <label><input type="checkbox" name="events" value="Mehendi" checked />Mehendi</label>
+              <label><input type="checkbox" name="events" value="Sangeet" checked />Sangeet</label>
+              <label><input type="checkbox" name="events" value="Reception" checked />Reception</label>
+            </div>
+          </fieldset>
         </div>
-        <fieldset class="events-attending">
-          <legend class="field-label">Which events? <span>(select all)</span></legend>
-          <div class="event-checks">
-            <label><input type="checkbox" name="events" value="Haldi" checked />Haldi</label>
-            <label><input type="checkbox" name="events" value="Mehendi" checked />Mehendi</label>
-            <label><input type="checkbox" name="events" value="Sangeet" checked />Sangeet</label>
-            <label><input type="checkbox" name="events" value="Reception" checked />Reception</label>
-          </div>
-        </fieldset>
-        <label class="field-label" for="note">A note for the couple <span>(optional)</span></label>
+        <div class="blessing-intro" id="blessingIntro" hidden>
+          <h2>Send a little love</h2>
+          <p>Though you can’t be with us, your blessings mean so much.</p>
+        </div>
+        <label class="field-label" id="noteLabel" for="note">A note for the couple <span>(optional)</span></label>
         <textarea id="note" name="note" rows="3" placeholder="Your warm wishes…"></textarea>
         <button type="submit">Send RSVP <span>→</span></button>
       </form>
@@ -117,8 +127,27 @@
       const responseChoice = params.get('response');
       const attending = document.querySelector('input[value="Joyfully attending"]');
       const wishes = document.querySelector('input[value="Sending warm wishes"]');
+      const attendingDetails = document.getElementById('attendingDetails');
+      const blessingIntro = document.getElementById('blessingIntro');
+      const noteLabel = document.getElementById('noteLabel');
+      const note = document.getElementById('note');
+      const syncResponseFields = () => {
+        const sendingWishes = wishes.checked;
+        attendingDetails.hidden = sendingWishes;
+        blessingIntro.hidden = !sendingWishes;
+        noteLabel.innerHTML = sendingWishes
+          ? 'Your blessing for the couple <span>(optional)</span>'
+          : 'A note for the couple <span>(optional)</span>';
+        note.placeholder = sendingWishes
+          ? 'Write your heartfelt wishes for their journey together…'
+          : 'Your warm wishes…';
+      };
+      form.querySelectorAll('input[name="response"]').forEach((radio) => {
+        radio.addEventListener('change', syncResponseFields);
+      });
       if (responseChoice === 'joyfully-attending') attending.checked = true;
       if (responseChoice === 'with-regrets') wishes.checked = true;
+      syncResponseFields();
 
       if (navigator.share) {
         document.getElementById('nativeShare').hidden = false;
@@ -141,13 +170,16 @@
         const payload = {
           guestName: data.get('guestName'),
           response: data.get('response'),
-          guestCount: data.get('guestCount'),
-          kidsCount: data.get('kidsCount'),
-          events: events,
+          guestCount: data.get('response') === 'Joyfully attending' ? data.get('guestCount') : '',
+          kidsCount: data.get('response') === 'Joyfully attending' ? data.get('kidsCount') : '',
+          events: data.get('response') === 'Joyfully attending' ? events : [],
           note: data.get('note') || ''
         };
 
-        rsvpText = `RSVP — ${payload.guestName}\nWedding of Shanmukha & Bhanu (24–26 Nov 2026)\nResponse: ${payload.response}\nGuests: ${payload.guestCount}\nKids: ${payload.kidsCount}${eventsLine}${payload.note ? `\nMessage: ${payload.note}` : ''}`;
+        const isAttending = payload.response === 'Joyfully attending';
+        rsvpText = `RSVP — ${payload.guestName}\nWedding of Shanmukha & Bhanu (24–26 Nov 2026)\nResponse: ${payload.response}`
+          + (isAttending ? `\nGuests: ${payload.guestCount}\nKids: ${payload.kidsCount}${eventsLine}` : '')
+          + (payload.note ? `\n${isAttending ? 'Message' : 'Blessing'}: ${payload.note}` : '');
 
         if (GOOGLE_SCRIPT_URL) {
           try {
@@ -171,10 +203,9 @@
         }
 
         form.hidden = true;
-        const isAttending = payload.response === 'Joyfully attending';
         messageText.textContent = isAttending
           ? 'We can\'t wait to celebrate with you! Your RSVP has been recorded.'
-          : 'We\'ll miss you! Your response has been recorded.';
+          : 'Thank you for your kind wishes. Your blessings mean so much to us!';
         responseMessage.hidden = false;
 
         const waLink = document.getElementById('whatsappShare');
