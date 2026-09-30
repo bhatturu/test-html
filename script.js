@@ -52,7 +52,6 @@ const scheduleEventSceneClear = () => {
   }, 110);
 };
 
-const isTouch = window.matchMedia('(hover:none)').matches;
 eventTiles.forEach((tile) => {
   tile.addEventListener('pointerenter', () => activateEventScene(tile));
   tile.addEventListener('pointerleave', scheduleEventSceneClear);
@@ -66,14 +65,8 @@ eventTiles.forEach((tile) => {
   });
 });
 
-if (isTouch && eventScene) {
-  const tileObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) activateEventScene(entry.target);
-    });
-  }, { root: invitation, threshold: 0.5 });
-  eventTiles.forEach((tile) => tileObserver.observe(tile));
-}
+// On touch screens, let the guest choose the event. An intersection observer
+// made every visible tile compete for the full-scene background while scrolling.
 
 const sceneObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {

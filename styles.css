@@ -513,3 +513,10 @@
   .couple-scene .couple-illustration { height:170px; }
   .cover-seal .opening-title { font-size:clamp(36px,10vw,48px); }
 }
+
+/* Touch devices select an event by tapping; ignore sticky browser hover states. */
+@media (hover:none),(pointer:coarse) {
+  .events-paper .event-tile:not(.is-current):hover { transform:none; }
+  .events-paper .event-tile:not(.is-current):hover::after { opacity:0; }
+  .events-paper .event-tile:not(.is-current):hover .event-copy { filter:none; transform:none; }
+}
