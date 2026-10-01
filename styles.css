@@ -457,9 +457,10 @@
 .cover-seal .micro-copy { color:#4f684e; font-family:"Yatra One",var(--serif); font-size:clamp(10px,2.5vw,14px); font-weight:400; letter-spacing:.02em; line-height:1.1; text-shadow:0 1px rgba(255,250,234,.72); }
 
 /* Slide two: a floating temple-portrait composition rather than a card. */
-.couple-scene .couple-illustration { position:relative; isolation:isolate; width:min(235px,72vw); height:280px; margin:3px auto 12px; }
+.couple-scene .couple-frame { width:min(540px,100%); padding:22px clamp(14px,4vw,30px) 20px; }
+.couple-scene .couple-illustration { position:relative; width:min(390px,100%); height:clamp(300px,min(52vh,calc(100dvh - 385px)),460px); margin:3px auto 8px; }
 .couple-scene .couple-illustration::before { position:absolute; z-index:0; inset:3% 14% -4%; content:""; border:1px solid rgba(158,132,74,.32); border-radius:50% 50% 12% 12%; background:radial-gradient(ellipse at 50% 30%,rgba(255,252,232,.92),rgba(238,224,182,.34) 52%,rgba(152,174,139,.08) 72%,transparent 73%); box-shadow:0 15px 28px rgba(93,88,62,.13),inset 0 0 34px rgba(255,249,219,.76); }
-.couple-scene .couple-illustration img { position:relative; z-index:1; width:100%; height:100%; object-fit:contain; object-position:center; border-radius:0; }
+.couple-scene .couple-illustration img { position:relative; z-index:1; width:100%; height:100%; object-fit:contain; object-position:center; border-radius:0; mix-blend-mode:multiply; }
 .couple-scene .couple-frame h2 { margin:1px auto 0; padding:11px 10px 10px; border-top:1px solid rgba(133,123,79,.38); border-bottom:1px solid rgba(133,123,79,.38); background:linear-gradient(90deg,transparent,rgba(255,250,230,.56) 22%,rgba(255,250,230,.56) 78%,transparent); text-shadow:0 1px 9px rgba(255,252,240,.96); }
 .couple-scene .parents-copy { max-width:360px; padding:0 8px; text-shadow:0 1px 6px rgba(255,252,239,.92); }
 .couple-scene.in-view .couple-illustration::before { animation:temple-portrait-halo 6.5s ease-in-out .5s infinite alternate; }
@@ -478,7 +479,7 @@
 /* ── Mobile refinements ── */
 @media (max-width:480px) {
   .petal-layer i:nth-child(n+9) { display:none; }
-  .couple-scene .couple-illustration { width:min(215px,70vw); height:255px; }
+  .couple-scene .couple-illustration { width:min(390px,100%); height:clamp(280px,min(43vh,calc(100dvh - 390px)),360px); }
   .couple-scene .couple-illustration::before { inset:5% 10% -3%; }
   .couple-frame h2 { font-size:clamp(16px,4.2vw,22px); gap:6px; }
   .parents-copy { font-size:13px; padding:0 4px; }
@@ -508,7 +509,7 @@
 }
 @media (max-width:360px) {
   .events-paper .event-grid { grid-template-columns:1fr; }
-  .couple-scene .couple-illustration { width:min(185px,68vw); height:220px; }
+  .couple-scene .couple-illustration { height:clamp(260px,min(40vh,calc(100dvh - 390px)),320px); }
   .cover-seal .opening-title { font-size:clamp(36px,10vw,48px); }
 }
 
