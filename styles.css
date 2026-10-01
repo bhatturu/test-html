@@ -210,6 +210,7 @@
 .garland-medallion::before { left:10px; transform:rotate(13deg); }.garland-medallion::after { right:10px; transform:rotate(-13deg); }
 .cover-seal .micro-copy { max-width:none; color:#5c724f; font-size:clamp(9px,2.8vw,13px); letter-spacing:.095em; text-shadow:0 1px rgba(255,248,225,.48); white-space:nowrap; }
 .cover-seal .script-line { color:#a47b36; font-size:50px; text-shadow:0 1px rgba(255,247,222,.44); }
+.cover-seal .opening-couple-art { display:block; width:min(100%,300px); height:clamp(190px,34vh,310px); margin:-5px auto -11px; object-fit:contain; object-position:center; }
 .cover-seal .opening-title { margin:21px 0 16px; color:#405d46; font-family:var(--display-script); font-size:clamp(51px,12vw,68px); font-weight:400; line-height:.78; letter-spacing:0; text-shadow:0 1px rgba(255,249,230,.42); white-space:normal; }
 .cover-seal .opening-title::first-line { letter-spacing:0; }
 .cover-seal .welcome-subtitle { position:relative; z-index:2; margin-top:22px; color:#38563e; font-size:26px; font-weight:700; letter-spacing:.035em; text-shadow:0 1px rgba(255,249,230,.62); }
