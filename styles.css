@@ -458,9 +458,9 @@
 
 /* Slide two: a floating temple-portrait composition rather than a card. */
 .couple-scene .couple-frame { width:min(540px,100%); padding:22px clamp(14px,4vw,30px) 20px; }
-.couple-scene .couple-illustration { position:relative; width:min(260px,68vw); aspect-ratio:943 / 1667; height:auto; margin:3px auto 12px; overflow:hidden; border:1px solid rgba(158,132,74,.42); border-bottom:0; border-radius:50% 50% 0 0; background:linear-gradient(180deg,rgba(255,248,221,.12),rgba(128,150,117,.1)); box-shadow:0 15px 28px rgba(93,88,62,.16),inset 0 0 34px rgba(255,249,219,.36); }
+.couple-scene .couple-illustration { position:relative; width:min(260px,68vw); aspect-ratio:943 / 1667; height:auto; margin:3px auto 12px; overflow:hidden; border:1px solid rgba(158,132,74,.42); border-bottom:0; border-radius:50% 50% 0 0 / 22% 22% 0 0; background:linear-gradient(180deg,rgba(255,248,221,.12),rgba(128,150,117,.1)); box-shadow:0 15px 28px rgba(93,88,62,.16),inset 0 0 34px rgba(255,249,219,.36); }
 .couple-scene .couple-illustration::before { position:absolute; z-index:0; inset:0; content:""; border-radius:inherit; background:radial-gradient(ellipse at 50% 30%,rgba(255,252,232,.22),rgba(238,224,182,.08) 52%,transparent 73%); }
-.couple-scene .couple-illustration img { position:relative; z-index:1; display:block; width:100%; height:100%; object-fit:contain; object-position:center bottom; border-radius:0; }
+.couple-scene .couple-illustration img { position:relative; z-index:1; display:block; width:94%; height:94%; margin:2% auto 0; object-fit:contain; object-position:center; border-radius:0; }
 .couple-scene .couple-frame h2 { margin:1px auto 0; padding:11px 10px 10px; border-top:1px solid rgba(133,123,79,.38); border-bottom:1px solid rgba(133,123,79,.38); background:linear-gradient(90deg,transparent,rgba(255,250,230,.56) 22%,rgba(255,250,230,.56) 78%,transparent); text-shadow:0 1px 9px rgba(255,252,240,.96); }
 .couple-scene .parents-copy { max-width:360px; padding:0 8px; text-shadow:0 1px 6px rgba(255,252,239,.92); }
 .couple-scene.in-view .couple-illustration::before { animation:temple-portrait-halo 6.5s ease-in-out .5s infinite alternate; }
